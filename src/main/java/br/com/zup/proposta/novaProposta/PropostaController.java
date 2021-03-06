@@ -23,6 +23,10 @@ public class PropostaController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cria(@RequestBody @Valid CriaPropostaRequest request) {
+		if(repository.existsByDocumento(request.getDocumento())) {
+			return ResponseEntity.unprocessableEntity().build();
+		}
+		
 		Proposta proposta = request.toModel();
 		proposta = repository.save(proposta);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(proposta.getId()).toUri();

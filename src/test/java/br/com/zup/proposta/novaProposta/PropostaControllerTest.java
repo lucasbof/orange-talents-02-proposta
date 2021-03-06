@@ -43,7 +43,7 @@ class PropostaControllerTest {
 
 	@ParameterizedTest
 	@CsvSource({"27249752006", "272.497.520-06", "56.784.339/0001-80", "56784339000180"})
-	@DisplayName("cria deveria inserir proposta e returnar 201 quando os dados são válidos")
+	@DisplayName("cria deveria inserir proposta e returna 201 quando os dados são válidos")
 	void teste1(String documento) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "434", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com", enderecoRequest,
@@ -60,102 +60,118 @@ class PropostaControllerTest {
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o nome está nulo, só espaços ou vazio")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o nome está nulo, só espaços ou vazio")
 	void teste2(String nome) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "434", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest(nome, "lucas@gmail.com", enderecoRequest,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '", "@gmail.com", "lucas"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o email está nulo, só espaços ou vazio")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o email está nulo, só espaços ou vazio")
 	void teste3(String email) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "434", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", email, enderecoRequest,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '", "27249752007", "272.497.520-07", "56.784.339/0001-81", "56784339000181"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o documento está nulo, só espaços, vazio ou quando cpf/cpnj são inválidos")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o documento está nulo, só espaços, vazio ou quando cpf/cpnj são inválidos")
 	void teste4(String documento) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "434", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
 				documento, new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	@Test
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o endereço está nulo")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o endereço está nulo")
 	void teste5() throws Exception {
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , null,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o logradouro de um endereço está nulo, só espaços ou vazio")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o logradouro de um endereço está nulo, só espaços ou vazio")
 	void teste6(String logradouro) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest(logradouro, "434", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o número de um endereço está nulo, só espaços ou vazio")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o número de um endereço está nulo, só espaços ou vazio")
 	void teste7(String numero) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", numero, "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	
 	@ParameterizedTest
 	@CsvSource({"''", ",", "'    '"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o cep de um endereço está nulo, só espaços ou vazio")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o cep de um endereço está nulo, só espaços ou vazio")
 	void teste8(String cep) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "767", cep);
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
 				"27249752006", new BigDecimal(1000));
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
 	}
 	
 	@ParameterizedTest
 	@CsvSource({",", "0", "-1.7", "-35.5"})
-	@DisplayName("cria não deveria inserir proposta e returnar 400 quando o salário for nulo ou menor que ou igual a zero")
+	@DisplayName("cria não deveria inserir proposta e returna 400 quando o salário for nulo ou menor que ou igual a zero")
 	void teste9(BigDecimal salario) throws Exception {
 		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "767", "13230442");
 		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
 				"27249752006", salario);
 		
 		ResultActions result = fazRequisicao(criaPropostaRequest);
-		eErroDeValidacao(result);
+		eErroDeValidacaoRetornando400(result);
+	}
+	
+	@Test
+	@DisplayName("cria não deveria inserir proposta e returna 422 quando já existir uma proposta para um mesmo documento")
+	void teste10() throws Exception {
+		EnderecoRequest enderecoRequest = new EnderecoRequest("Rua 8", "767", "13230442");
+		CriaPropostaRequest criaPropostaRequest = new CriaPropostaRequest("Lucas", "lucas@gmail.com" , enderecoRequest,
+				"27249752006", new BigDecimal(1234.33));
+		
+		ResultActions result = fazRequisicao(criaPropostaRequest);
+		result.andExpect(status().isCreated());
+		
+		result = fazRequisicao(criaPropostaRequest);
+		result.andExpect(status().isUnprocessableEntity());
+		long count = propostaRepository.count();
+		assertEquals(1L, count);
 	}
 	
 	
-	private void eErroDeValidacao(ResultActions result) throws Exception {
+	private void eErroDeValidacaoRetornando400(ResultActions result) throws Exception {
 		result.andExpect(status().isBadRequest());
 		
 		long count = propostaRepository.count();
