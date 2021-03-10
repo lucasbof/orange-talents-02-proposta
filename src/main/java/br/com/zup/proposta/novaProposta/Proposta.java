@@ -5,10 +5,15 @@ import java.math.BigDecimal;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import br.com.zup.proposta.compartilhado.apis.solicitacaodeanalise.SolicitacaoDeAnaliseRequest;
+import br.com.zup.proposta.compartilhado.apis.solicitacaodeanalise.SolicitacaoDeAnaliseResponse;
 
 @Entity
 @Table(name = "tb_proposta")
@@ -22,10 +27,15 @@ public class Proposta implements Serializable {
 	private String nome;
 	private String email;
 	private String documento;
+
+	@Enumerated(EnumType.STRING)
+	private StatusCartao statusCartao;
 	private BigDecimal salario;
-	
+
 	@Embedded
 	private Endereco endereco;
+
+	private String numeroCartao;
 
 	@Deprecated
 	public Proposta() {
@@ -61,6 +71,26 @@ public class Proposta implements Serializable {
 
 	public BigDecimal getSalario() {
 		return salario;
+	}
+
+	public StatusCartao getStatusCartao() {
+		return statusCartao;
+	}
+
+	public String getNumeroCartao() {
+		return numeroCartao;
+	}
+
+	public void atualizaStatusCartao(SolicitacaoDeAnaliseResponse response) {
+		this.statusCartao = StatusCartao.getStatusCartaoDeResultadoSolcitacao(response.getResultadoSolicitacao());
+	}
+
+	public void atualizaNumeroCartao(String numero) {
+		this.numeroCartao = numero;
+	}
+
+	public SolicitacaoDeAnaliseRequest getSolicitacaoDeAnaliseRequest() {
+		return new SolicitacaoDeAnaliseRequest(documento, nome, id.toString());
 	}
 
 	@Override
