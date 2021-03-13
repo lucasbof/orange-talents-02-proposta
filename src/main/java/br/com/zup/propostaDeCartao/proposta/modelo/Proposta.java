@@ -3,6 +3,7 @@ package br.com.zup.propostaDeCartao.proposta.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,10 +11,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseRequest;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseApiRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseApiResponse;
 import br.com.zup.propostaDeCartao.proposta.enums.StatusCartao;
 
 @Entity
@@ -36,7 +39,9 @@ public class Proposta implements Serializable {
 	@Embedded
 	private Endereco endereco;
 
-	private String numeroCartao;
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "cartao_id")
+	private Cartao cartao;
 
 	@Deprecated
 	public Proposta() {
@@ -78,20 +83,20 @@ public class Proposta implements Serializable {
 		return statusCartao;
 	}
 
-	public String getNumeroCartao() {
-		return numeroCartao;
+	public Cartao getCartao() {
+		return cartao;
 	}
 
-	public void atualizaStatusCartao(SolicitacaoDeAnaliseResponse response) {
+	public void atualizaStatusCartao(SolicitacaoDeAnaliseApiResponse response) {
 		this.statusCartao = StatusCartao.getStatusCartaoDeResultadoSolcitacao(response.getResultadoSolicitacao());
 	}
 
-	public void atualizaNumeroCartao(String numero) {
-		this.numeroCartao = numero;
+	public void atualizaCartao(Cartao cartao) {
+		this.cartao = cartao;
 	}
 
-	public SolicitacaoDeAnaliseRequest getSolicitacaoDeAnaliseRequest() {
-		return new SolicitacaoDeAnaliseRequest(documento, nome, id.toString());
+	public SolicitacaoDeAnaliseApiRequest getSolicitacaoDeAnaliseRequest() {
+		return new SolicitacaoDeAnaliseApiRequest(documento, nome, id.toString());
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package br.com.zup.propostaDeCartao.novaProposta;
+package br.com.zup.propostaDeCartao.proposta.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.clients.NovaSolicitacaoClient;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoRequest;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseRequest;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoApiRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseApiRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseApiResponse;
 import br.com.zup.propostaDeCartao.proposta.enums.StatusCartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 import br.com.zup.propostaDeCartao.proposta.repositorios.PropostaRepository;
@@ -63,16 +63,16 @@ class PropostaControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Mockito.when(
-				novaSolicitacaoClient.fazSolicitacaoDeCartao(ArgumentMatchers.any(SolicitacaoDeAnaliseRequest.class)))
-				.thenAnswer(new Answer<SolicitacaoDeAnaliseResponse>() {
+				novaSolicitacaoClient.fazSolicitacaoDeCartao(ArgumentMatchers.any(SolicitacaoDeAnaliseApiRequest.class)))
+				.thenAnswer(new Answer<SolicitacaoDeAnaliseApiResponse>() {
 					@Override
-					public SolicitacaoDeAnaliseResponse answer(InvocationOnMock invocation) throws Throwable {
-						SolicitacaoDeAnaliseRequest request = invocation.getArgument(0);
+					public SolicitacaoDeAnaliseApiResponse answer(InvocationOnMock invocation) throws Throwable {
+						SolicitacaoDeAnaliseApiRequest request = invocation.getArgument(0);
 
 						if (request.getNome().equals(nomeSolicitacaoSemRestricao))
-							return new SolicitacaoDeAnaliseResponse(ResultadoSolicitacaoRequest.SEM_RESTRICAO);
+							return new SolicitacaoDeAnaliseApiResponse(ResultadoSolicitacaoApiRequest.SEM_RESTRICAO);
 						else if (request.getNome().equals(nomeSolicitacaoComRestricao))
-							return new SolicitacaoDeAnaliseResponse(ResultadoSolicitacaoRequest.COM_RESTRICAO);
+							return new SolicitacaoDeAnaliseApiResponse(ResultadoSolicitacaoApiRequest.COM_RESTRICAO);
 						return null;
 					}
 				});
@@ -227,7 +227,6 @@ class PropostaControllerTest {
 		result.andExpect(jsonPath("$.endereco.logradouro").value(proposta.getEndereco().getLogradouro()));
 		result.andExpect(jsonPath("$.endereco.numero").value(proposta.getEndereco().getNumero()));
 		result.andExpect(jsonPath("$.endereco.cep").value(proposta.getEndereco().getCep()));
-		result.andExpect(jsonPath("$.numeroCartao").value(proposta.getNumeroCartao()));
 	}
 
 	@Test

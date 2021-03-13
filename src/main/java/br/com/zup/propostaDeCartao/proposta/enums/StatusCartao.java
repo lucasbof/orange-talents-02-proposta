@@ -1,22 +1,22 @@
 package br.com.zup.propostaDeCartao.proposta.enums;
 
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoApiRequest;
 
 public enum StatusCartao {
 
-	NAO_ELEGIVEL(ResultadoSolicitacaoRequest.COM_RESTRICAO), ELEGIVEL(ResultadoSolicitacaoRequest.SEM_RESTRICAO);
+	NAO_ELEGIVEL(ResultadoSolicitacaoApiRequest.COM_RESTRICAO), ELEGIVEL(ResultadoSolicitacaoApiRequest.SEM_RESTRICAO);
 
-	private final ResultadoSolicitacaoRequest solicitacao;
+	private final ResultadoSolicitacaoApiRequest solicitacao;
 
-	StatusCartao(ResultadoSolicitacaoRequest solicitacao) {
+	StatusCartao(ResultadoSolicitacaoApiRequest solicitacao) {
 		this.solicitacao = solicitacao;
 	}
 
-	public ResultadoSolicitacaoRequest getSolicitacao() {
+	public ResultadoSolicitacaoApiRequest getSolicitacao() {
 		return solicitacao;
 	}
 
-	public static StatusCartao getStatusCartaoDeResultadoSolcitacao(ResultadoSolicitacaoRequest rs) {
+	public static StatusCartao getStatusCartaoDeResultadoSolcitacao(ResultadoSolicitacaoApiRequest rs) {
 		for (StatusCartao status : StatusCartao.values()) {
 			if (rs.equals(status.getSolicitacao())) {
 				return status;

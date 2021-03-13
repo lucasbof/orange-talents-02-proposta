@@ -1,5 +1,7 @@
 package br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.clients;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,20 +12,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.clients.NovaSolicitacaoClient.NovaSolicitacaoFallback;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseRequest;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseApiRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseApiResponse;
 import br.com.zup.propostaDeCartao.compartilhado.exceptions.ApiErroException;
 import feign.FeignException;
 
-@FeignClient(url = "http://localhost:9999/", name = "novaSolicitacao", fallbackFactory = NovaSolicitacaoFallback.class)
+@FeignClient(url = "${apis.novasolicitacao.host}", name = "novaSolicitacao", fallbackFactory = NovaSolicitacaoFallback.class)
 public interface NovaSolicitacaoClient {
 
-	@PostMapping("api/solicitacao")
-	SolicitacaoDeAnaliseResponse fazSolicitacaoDeCartao(SolicitacaoDeAnaliseRequest request);
+	@PostMapping("/api/solicitacao")
+	SolicitacaoDeAnaliseApiResponse fazSolicitacaoDeCartao(SolicitacaoDeAnaliseApiRequest request);
+	
 	
 	@Component
 	static class NovaSolicitacaoFallback implements FallbackFactory<NovaSolicitacaoClient> {
 
+		Logger logger = LoggerFactory.getLogger(NovaSolicitacaoFallback.class);
+		
 		@Autowired
 		private ObjectMapper om;
 		
@@ -32,13 +37,14 @@ public interface NovaSolicitacaoClient {
 			return new NovaSolicitacaoClient() {
 				
 				@Override
-				public SolicitacaoDeAnaliseResponse fazSolicitacaoDeCartao(SolicitacaoDeAnaliseRequest request) {
+				public SolicitacaoDeAnaliseApiResponse fazSolicitacaoDeCartao(SolicitacaoDeAnaliseApiRequest request) {
 					if(cause instanceof FeignException) {
 						FeignException err = (FeignException) cause;
 						if(err.status() == 422) {
-							return (SolicitacaoDeAnaliseResponse) jsonStringParaObject(err.contentUTF8(), SolicitacaoDeAnaliseResponse.class);
+							return (SolicitacaoDeAnaliseApiResponse) jsonStringParaObject(err.contentUTF8(), SolicitacaoDeAnaliseApiResponse.class);
 						}
 					}
+					logger.error(cause.getMessage(), cause);
 					throw new ApiErroException(HttpStatus.BAD_REQUEST, "Erro ao fazer chamada da API para a solicitação de um novo cartão");
 				}
 				private Object jsonStringParaObject(String jsonString, Class<?> clazz) {

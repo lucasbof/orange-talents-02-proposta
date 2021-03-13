@@ -13,7 +13,6 @@ public class ConsultaPropostaResponse {
 	private StatusCartao statusCartao;
 	private BigDecimal salario;
 	private EnderecoResponse endereco;
-	private String numeroCartao;
 
 	public ConsultaPropostaResponse(Proposta proposta) {
 		this.nome = proposta.getNome();
@@ -22,7 +21,6 @@ public class ConsultaPropostaResponse {
 		this.statusCartao = proposta.getStatusCartao();
 		this.salario = proposta.getSalario();
 		this.endereco = new EnderecoResponse(proposta.getEndereco());
-		this.numeroCartao = proposta.getNumeroCartao();
 	}
 
 	public String getNome() {
@@ -47,10 +45,6 @@ public class ConsultaPropostaResponse {
 
 	public EnderecoResponse getEndereco() {
 		return endereco;
-	}
-
-	public String getNumeroCartao() {
-		return numeroCartao;
 	}
 
 }

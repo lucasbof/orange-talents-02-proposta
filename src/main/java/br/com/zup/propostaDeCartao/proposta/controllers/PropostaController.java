@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.clients.NovaSolicitacaoClient;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoRequest;
-import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.ResultadoSolicitacaoApiRequest;
+import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseApiResponse;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 import br.com.zup.propostaDeCartao.proposta.repositorios.PropostaRepository;
 import br.com.zup.propostaDeCartao.proposta.requests.CriaPropostaRequest;
@@ -43,11 +43,11 @@ public class PropostaController {
 		Proposta proposta = request.toModel();
 		proposta = repository.save(proposta);
 		
-		SolicitacaoDeAnaliseResponse response = novaSolicitacaoClient.fazSolicitacaoDeCartao(proposta.getSolicitacaoDeAnaliseRequest());
+		SolicitacaoDeAnaliseApiResponse response = novaSolicitacaoClient.fazSolicitacaoDeCartao(proposta.getSolicitacaoDeAnaliseRequest());
 
 		proposta.atualizaStatusCartao(response);
 
-		if (response.getResultadoSolicitacao().equals(ResultadoSolicitacaoRequest.COM_RESTRICAO)) {
+		if (response.getResultadoSolicitacao().equals(ResultadoSolicitacaoApiRequest.COM_RESTRICAO)) {
 			return ResponseEntity.unprocessableEntity().body("O usuário não é elegível a ter um cartão");
 		}
 

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.clients.CartoesClient;
-import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.responses.CartaoResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.responses.CartaoApiResponse;
 import br.com.zup.propostaDeCartao.proposta.enums.StatusCartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 import br.com.zup.propostaDeCartao.proposta.repositorios.PropostaRepository;
@@ -35,11 +35,11 @@ public class VerificadorDeCartao {
 	@Async
 	@Transactional
 	public void verificaPropostasComCartoesDisponiveis() {
-		List<Proposta> lista = propostaRepository.findByStatusCartaoAndNumeroCartaoIsNull(StatusCartao.ELEGIVEL);
+		List<Proposta> lista = propostaRepository.findByStatusCartaoAndCartaoIsNull(StatusCartao.ELEGIVEL);
 		for(Proposta proposta : lista) {
 			try {
-				CartaoResponse response = cartoesClient.verificaCartaoExistente(proposta.getId().toString());
-				proposta.atualizaNumeroCartao(response.getId());
+				CartaoApiResponse response = cartoesClient.verificaCartaoExistente(proposta.getId().toString());
+				proposta.atualizaCartao(response.toModel(proposta));
 				propostaRepository.save(proposta);
 				logger.info("Proposta de ID " + proposta.getId() + " teve o número de cartão atualizado");
 			} 
