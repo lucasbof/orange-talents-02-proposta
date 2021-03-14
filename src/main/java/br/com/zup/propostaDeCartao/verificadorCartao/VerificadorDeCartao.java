@@ -30,7 +30,7 @@ public class VerificadorDeCartao {
 	@Autowired
 	private CartoesClient cartoesClient;
 
-	@Scheduled(fixedDelay=5000)
+	@Scheduled(fixedDelay=30000)
 	@Lock(LockModeType.PESSIMISTIC_READ)
 	@Async
 	@Transactional
