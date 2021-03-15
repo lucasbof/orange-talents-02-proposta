@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.zup.propostaDeCartao.biometria.modelo.Biometria;
 import br.com.zup.propostaDeCartao.biometria.requests.CriaBiometriaRequest;
-import br.com.zup.propostaDeCartao.proposta.modelo.Cartao;
+import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Endereco;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 

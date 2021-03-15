@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.zup.propostaDeCartao.proposta.modelo.Cartao;
+import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 
 public class CartaoBiometriaResponse {
 

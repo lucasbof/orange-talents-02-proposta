@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.zup.propostaDeCartao.biometria.modelo.Biometria;
-import br.com.zup.propostaDeCartao.proposta.modelo.Cartao;
+import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 
 public class CriaBiometriaRequest {
 

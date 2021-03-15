@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.com.zup.propostaDeCartao.proposta.modelo.Cartao;
+import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 
-public class CartaoApiResponse {
+public class VerificaCartaoExistenteApiResponse {
 
 	@JsonProperty("id")
 	private String numeroCatao;
@@ -17,7 +17,7 @@ public class CartaoApiResponse {
 	private BigDecimal limite;
 	private String idProposta;
 
-	public CartaoApiResponse(String numeroCatao, LocalDateTime emitidoEm, String titular, BigDecimal limite,
+	public VerificaCartaoExistenteApiResponse(String numeroCatao, LocalDateTime emitidoEm, String titular, BigDecimal limite,
 			String idProposta) {
 		this.numeroCatao = numeroCatao;
 		this.emitidoEm = emitidoEm;

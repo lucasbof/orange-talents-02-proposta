@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.zup.propostaDeCartao.biometria.modelo.Biometria;
 import br.com.zup.propostaDeCartao.biometria.requests.CriaBiometriaRequest;
 import br.com.zup.propostaDeCartao.biometria.responses.BiometriaResponse;
-import br.com.zup.propostaDeCartao.proposta.modelo.Cartao;
+import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 
 @RestController
 @RequestMapping("/biometrias")

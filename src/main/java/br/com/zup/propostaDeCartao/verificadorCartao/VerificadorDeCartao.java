@@ -13,8 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.clients.CartoesClient;
-import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.responses.CartaoApiResponse;
+import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.clients.VerificaCartaoExistenteClient;
+import br.com.zup.propostaDeCartao.compartilhado.apis.cartoes.responses.VerificaCartaoExistenteApiResponse;
 import br.com.zup.propostaDeCartao.proposta.enums.StatusCartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 import br.com.zup.propostaDeCartao.proposta.repositorios.PropostaRepository;
@@ -28,7 +28,7 @@ public class VerificadorDeCartao {
 	private PropostaRepository propostaRepository;
 	
 	@Autowired
-	private CartoesClient cartoesClient;
+	private VerificaCartaoExistenteClient cartoesClient;
 
 	@Scheduled(fixedDelay=30000)
 	@Lock(LockModeType.PESSIMISTIC_READ)
@@ -38,7 +38,7 @@ public class VerificadorDeCartao {
 		List<Proposta> lista = propostaRepository.findByStatusCartaoAndCartaoIsNull(StatusCartao.ELEGIVEL);
 		for(Proposta proposta : lista) {
 			try {
-				CartaoApiResponse response = cartoesClient.verificaCartaoExistente(proposta.getId().toString());
+				VerificaCartaoExistenteApiResponse response = cartoesClient.verificaCartaoExistente(proposta.getId().toString());
 				proposta.atualizaCartao(response.toModel(proposta));
 				propostaRepository.save(proposta);
 				logger.info("Proposta de ID " + proposta.getId() + " teve o número de cartão atualizado");
