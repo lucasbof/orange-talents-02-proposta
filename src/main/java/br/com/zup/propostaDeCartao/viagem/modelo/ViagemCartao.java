@@ -26,6 +26,10 @@ public class ViagemCartao {
 	private String ipCliente;
 	
 	private String userAgentCliente;
+	
+	@Deprecated
+	public ViagemCartao() {
+	}
 
 	public ViagemCartao(String destino, LocalDate dataTerminoViagem, String ipCliente, String userAgentCliente) {
 		this.destino = destino;

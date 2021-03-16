@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import br.com.zup.propostaDeCartao.biometria.modelo.Biometria;
 import br.com.zup.propostaDeCartao.bloqueioCartao.modelo.BloqueioCartao;
 import br.com.zup.propostaDeCartao.cartao.enums.SituacaoCartao;
+import br.com.zup.propostaDeCartao.carteira.modelo.CarteiraCartao;
 import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 
 @Entity
@@ -41,6 +42,9 @@ public class Cartao {
 
 	@OneToOne(mappedBy = "cartao")
 	private BloqueioCartao bloqueio;
+
+	@OneToOne(mappedBy = "cartao")
+	private CarteiraCartao carteira;
 
 	@Deprecated
 	public Cartao() {
@@ -87,6 +91,10 @@ public class Cartao {
 
 	public void atualizaSituacao(SituacaoCartao situacao) {
 		this.situacao = situacao;
+	}
+
+	public CarteiraCartao getCarteira() {
+		return carteira;
 	}
 
 }
