@@ -21,15 +21,16 @@ public class BloqueioCartao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
-	@JoinColumn(name = "cartao_id")
-	private Cartao cartao;
 
 	private String usuarioIp;
 
 	private String userAgent;
 
 	private LocalDateTime criadoEm = LocalDateTime.now();
+	
+	@OneToOne
+	@JoinColumn(name = "cartao_id")
+	private Cartao cartao;
 
 	@Deprecated
 	public BloqueioCartao() {
