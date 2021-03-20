@@ -41,6 +41,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 		http.authorizeRequests()
 		.antMatchers("/h2-console/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
+		.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();

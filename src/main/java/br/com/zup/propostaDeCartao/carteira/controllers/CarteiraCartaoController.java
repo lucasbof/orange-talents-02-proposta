@@ -1,9 +1,11 @@
 package br.com.zup.propostaDeCartao.carteira.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,11 @@ public class CarteiraCartaoController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		
-		if(cartao.getCarteira() != null) {
+		TypedQuery<CarteiraCartao> query = manager.createQuery("SELECT c FROM CarteiraCartao c WHERE c.cartao = :cartao", CarteiraCartao.class);
+		query.setParameter("cartao", cartao);
+		List<CarteiraCartao> carteiras = query.getResultList();
+		
+		if(carteiras.size() > 0) {
 			return ResponseEntity.unprocessableEntity().build();
 		}
 		

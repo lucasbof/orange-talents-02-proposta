@@ -38,17 +38,14 @@ public class ViagemCartaoController {
 	public ResponseEntity<?> cria(@RequestBody @Valid ViagemRequest viagemRequest,
 			@PathVariable("cartaoId") Long cartaoId, @RequestHeader(HttpHeaders.USER_AGENT) String userAgent,
 			HttpServletRequest request) {
+		userAgent = userAgent == null ? "undefined" : userAgent;
 		Cartao cartao = manager.find(Cartao.class, cartaoId);
 		if (cartao == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		String enderecoIp = request.getHeader("X-Forward-For");
 		if (enderecoIp == null) {
-			enderecoIp = request.getRemoteAddr();
-		}
-
-		if (userAgent == null || userAgent.isBlank() || enderecoIp == null || enderecoIp.isBlank()) {
-			return ResponseEntity.badRequest().build();
+			enderecoIp = request.getRemoteAddr() == null ? "undefined" : request.getRemoteAddr();
 		}
 
 		InformaViagemApiRequest clientRequest = new InformaViagemApiRequest(viagemRequest.getDestino(), viagemRequest.getDataTerminoViagem());

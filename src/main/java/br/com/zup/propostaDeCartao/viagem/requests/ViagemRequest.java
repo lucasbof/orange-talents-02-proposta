@@ -7,19 +7,21 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ViagemRequest {
 
 	@NotBlank
-	@JsonProperty("destino")
 	private String destino;
 
 	@Future
 	@NotNull
-	@JsonProperty("dataTerminoViagem")
-	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+	@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
 	private LocalDate dataTerminoViagem;
+
+	public ViagemRequest(@NotBlank String destino, @Future @NotNull LocalDate dataTerminoViagem) {
+		this.destino = destino;
+		this.dataTerminoViagem = dataTerminoViagem;
+	}
 
 	public String getDestino() {
 		return destino;

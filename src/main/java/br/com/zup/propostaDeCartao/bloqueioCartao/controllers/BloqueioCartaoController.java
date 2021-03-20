@@ -35,26 +35,26 @@ public class BloqueioCartaoController {
 	@Transactional
 	public ResponseEntity<?> cria(@RequestHeader(HttpHeaders.USER_AGENT) String userAgent, HttpServletRequest request,
 			@PathVariable("cartaoId") Long cartaoId) {
+		if (userAgent == null) {
+			userAgent = "undefined";
+		}
+		
 		Cartao cartao = manager.find(Cartao.class, cartaoId);
 		if (cartao == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
-		String ipAddress = request.getHeader("X-Forward-For");
-		if (ipAddress == null) {
-			ipAddress = request.getRemoteAddr();
+		String enderecoIp = request.getHeader("X-Forward-For");
+		if (enderecoIp == null) {
+			enderecoIp = request.getRemoteAddr() == null ? "undefined" : request.getRemoteAddr();
 		}
 
-		if (userAgent == null || userAgent.isBlank() || ipAddress == null || ipAddress.isBlank()) {
-			return ResponseEntity.badRequest().build();
-		}
-
-		if (cartao.getBloqueio() != null) {
+		if (cartao.getSituacao().equals(SituacaoCartao.BLOQUEADO)) {
 			return ResponseEntity.unprocessableEntity().build();
 		}
 		
 		informaBloqueioClient.informaBloqueioCartao(cartao.getNumeroCartao(), new InformaBloqueioCartaoApiRequest("API_PROPOSTA"));
-        BloqueioCartao bloqueio = new BloqueioCartao(cartao, ipAddress, userAgent);
+        BloqueioCartao bloqueio = new BloqueioCartao(cartao, enderecoIp, userAgent);
         manager.persist(bloqueio);
         cartao.atualizaSituacao(SituacaoCartao.BLOQUEADO);
         

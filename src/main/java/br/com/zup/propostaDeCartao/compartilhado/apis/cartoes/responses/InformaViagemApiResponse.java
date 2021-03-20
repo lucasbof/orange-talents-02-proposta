@@ -7,10 +7,14 @@ public class InformaViagemApiResponse {
 	@JsonProperty("resultado")
 	private String resultado;
 
-	public void setResultado(String resultado) {
-		this.resultado = resultado;
+	public InformaViagemApiResponse() {
 	}
 
+	public InformaViagemApiResponse(String resultado) {
+		super();
+		this.resultado = resultado;
+	}
+	
 	public String getResultado() {
 		return resultado;
 	}

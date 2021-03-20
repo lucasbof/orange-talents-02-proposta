@@ -38,10 +38,12 @@ public class CriaPropostaRequest implements Serializable {
 	public CriaPropostaRequest(@NotBlank String nome, @NotBlank @Email String email,
 			@NotNull @Valid EnderecoRequest endereco, @NotBlank String documento,
 			@NotNull @Positive BigDecimal salario) {
-		super();
 		this.nome = nome;
 		this.email = email;
 		this.endereco = endereco;
+		if(documento != null) {
+			documento.replaceAll("[^0-9]", "");
+		}
 		this.documento = documento;
 		this.salario = salario;
 	}

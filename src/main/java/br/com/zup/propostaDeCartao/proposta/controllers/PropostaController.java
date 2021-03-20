@@ -33,12 +33,15 @@ public class PropostaController {
 	
 	@Autowired
 	private NovaSolicitacaoClient novaSolicitacaoClient;	
+	
+	
+	//private ConversorEncriptador encriptador;
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> cria(@RequestBody @Valid CriaPropostaRequest request) {
+	public ResponseEntity<?> criaProposta(@RequestBody @Valid CriaPropostaRequest request) {
 		if (repository.existsByDocumento(request.getDocumento())) {
-			return ResponseEntity.unprocessableEntity().body("Já existe uma proposta cadastrada para o documento " + request.getDocumento());
+			return ResponseEntity.unprocessableEntity().body("Já existe uma proposta cadastrada para o documento informado!");
 		}
 		Proposta proposta = request.toModel();
 		proposta = repository.save(proposta);

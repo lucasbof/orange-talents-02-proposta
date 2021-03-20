@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import br.com.zup.propostaDeCartao.cartao.modelo.Cartao;
 import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.requests.SolicitacaoDeAnaliseApiRequest;
 import br.com.zup.propostaDeCartao.compartilhado.apis.solicitacaodeanalise.responses.SolicitacaoDeAnaliseApiResponse;
+import br.com.zup.propostaDeCartao.compartilhado.utils.ConversorEncriptador;
 import br.com.zup.propostaDeCartao.proposta.enums.StatusCartao;
 
 @Entity
@@ -31,6 +33,8 @@ public class Proposta implements Serializable {
 	private Long id;
 	private String nome;
 	private String email;
+	
+	@Convert(converter = ConversorEncriptador.class)
 	private String documento;
 
 	@Enumerated(EnumType.STRING)
@@ -52,6 +56,7 @@ public class Proposta implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.endereco = endereco;
+
 		this.documento = documento;
 		this.salario = salario;
 	}

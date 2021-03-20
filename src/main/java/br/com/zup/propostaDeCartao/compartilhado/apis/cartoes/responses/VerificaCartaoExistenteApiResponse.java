@@ -11,23 +11,23 @@ import br.com.zup.propostaDeCartao.proposta.modelo.Proposta;
 public class VerificaCartaoExistenteApiResponse {
 
 	@JsonProperty("id")
-	private String numeroCatao;
+	private String numeroCartao;
 	private LocalDateTime emitidoEm;
 	private String titular;
 	private BigDecimal limite;
 	private String idProposta;
 
-	public VerificaCartaoExistenteApiResponse(String numeroCatao, LocalDateTime emitidoEm, String titular, BigDecimal limite,
-			String idProposta) {
-		this.numeroCatao = numeroCatao;
+	public VerificaCartaoExistenteApiResponse(String numeroCartao, LocalDateTime emitidoEm, String titular,
+			BigDecimal limite, String idProposta) {
+		this.numeroCartao = numeroCartao;
 		this.emitidoEm = emitidoEm;
 		this.titular = titular;
 		this.limite = limite;
 		this.idProposta = idProposta;
 	}
 
-	public String getNumeroCatao() {
-		return numeroCatao;
+	public String getNumeroCartao() {
+		return numeroCartao;
 	}
 
 	public LocalDateTime getEmitidoEm() {
@@ -47,7 +47,7 @@ public class VerificaCartaoExistenteApiResponse {
 	}
 
 	public Cartao toModel(Proposta proposta) {
-		return new Cartao(numeroCatao, titular, emitidoEm, proposta);
+		return new Cartao(numeroCartao, titular, emitidoEm, proposta);
 	}
 
 }
